@@ -79,15 +79,19 @@ module Mumbletune
 				when /^next$/i
 					Mumbletune.player.next
 					current = Mumbletune.player.current_song
-					message.respond "OK, now playing #{current.artist} - #{current.name}"
+					message.respond_all "#{message.sender.name} skipped to #{current.artist} - #{current.name}"
 
 				when /^clear$/i
 					Mumbletune.player.clear_queue
-					message.respond "#{message.sender.name} cleared the queue."
+					message.respond_all "#{message.sender.name} cleared the queue."
 
 				when /^undo$/i
 					removed = Mumbletune.player.undo
-					message.respond_all "#{message.sender.name} removed #{removed.description} that #{removed.user} added."
+					if message.sender.name == removed.user
+						message.respond_all "#{message.sender.name} removed #{removed.description}."
+					else 
+						message.respond_all "#{message.sender.name} removed #{removed.description} at #{removed.user} added."
+					end
 
 
 				when /^(what|queue)$/i
