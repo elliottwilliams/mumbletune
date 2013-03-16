@@ -110,13 +110,10 @@ module Mumbletune
 						message.respond "Now the volume is #{Mumbletune.player.volume?}."
 					end
 
-				when /^wisdom$/i
-					message.respond `fortune`
-
 				when /^help$/i
 					rendered = Mustache.render Message.template[:commands]
 					message.respond rendered
-					
+
 				else # Unknown command was given.
 					rendered = Mustache.render Message.template[:commands],
 						:unknown => { :command => message.text }
