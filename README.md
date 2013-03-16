@@ -4,12 +4,12 @@ MUMBLETUNE is an amiable bot that connects to a mumble server and allows users t
 
 ## Installation
 
-First, install Hexxeh's (spotify-websocket-api)[https://github.com/Hexxeh/spotify-websocket-api].
+First, install Hexxeh's [spotify-websocket-api](https://github.com/Hexxeh/spotify-websocket-api).
 
     git clone git://github.com/Hexxeh/spotify-websocket-api.git
     cd spotify-websocket-api
     python setup.py build
-    puthon setup.py install
+    python setup.py install
 
 Then, add this line to your application's Gemfile:
 
