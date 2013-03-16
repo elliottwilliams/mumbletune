@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mumbletune (0.1.0)
+    mumbletune (0.1.1)
       eventmachine
       meta-spotify
       mumble-ruby
