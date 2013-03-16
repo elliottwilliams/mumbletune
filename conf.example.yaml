@@ -1,0 +1,15 @@
+spotify:
+        username: "sp_username"
+        password: "sp_password"
+        region: "us"
+mumble:
+        host: "mumble-server.example.com"
+        port: 64738
+        username: "mumbletune"
+        password: "server_password"
+        channel: "Music Room"
+mpd:
+        host: "localhost"
+        port: 6600
+        fifo_out: "/tmp/mumble.fifo"
+        default_volume: 60

@@ -94,7 +94,7 @@ module Mumbletune
 					queue = Mumbletune.player.queue
 
 					# Now, a template.
-					rendered = Mustache.render Message.template[:queue2],
+					rendered = Mustache.render Message.template[:queue],
 						:queue => queue,
 						:anything? => (queue.empty?) ? false : true
 					message.respond rendered
@@ -116,12 +116,7 @@ module Mumbletune
 				when /^help$/i
 					rendered = Mustache.render Message.template[:commands]
 					message.respond rendered
-
-				# development
-				when /^talk/i then message.respond("Gems are truly outrageous.")
-				when /^(quit|exit)$/i then Mumbletune.shutdown
-				when /^store /i then puts Track.store
-
+					
 				else # Unknown command was given.
 					rendered = Mustache.render Message.template[:commands],
 						:unknown => { :command => message.text }

@@ -28,7 +28,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "sinatra"
   spec.add_runtime_dependency "meta-spotify"
   spec.add_runtime_dependency "rubypython"
-  
+
+  spec.add_runtime_dependency "thin"
   spec.add_runtime_dependency "eventmachine"
   spec.add_runtime_dependency "text"
   spec.add_runtime_dependency "mustache"
