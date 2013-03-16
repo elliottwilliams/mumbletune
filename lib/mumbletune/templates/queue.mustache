@@ -1,0 +1,41 @@
+{{#anything?}}
+<table>
+	<col width="29%">
+	<col width="13%">
+	<col width="19%">
+	<thead>
+		<tr class="header">
+			<th align="left"></th>
+			<th align="left">
+				Track
+			</th>
+			<th align="left">
+				Artist
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+{{/anything?}}
+
+		{{#queue}}
+		<tr class="odd">
+			<td align="left">
+				{{#playing?}} &#9658; {{/playing?}}
+			</td>
+			<td align="left">
+				{{name}}
+			</td>
+			<td align="left">
+				{{artist}}
+			</td>
+		</tr>
+		{{/queue}}
+
+{{#anything?}}
+	</tbody>
+</table>
+{{/anything?}}
+
+{{^anything?}}
+	Nothing is playing. :c
+{{/anything?}}
