@@ -14,14 +14,15 @@ module Mumbletune
 			@history = Array.new
 			@prev_id = 0
 
-			self.default_volume
+			self.defaults
 			self.establish_callbacks
 		end
 
 		# Setup
 
-		def default_volume
+		def defaults
 			@mpd.volume = Mumbletune.config["mpd"]["default_volume"] || 100
+			@mpd.consume = true
 		end
 
 		def establish_callbacks
@@ -91,13 +92,20 @@ module Mumbletune
 		end
 
 		def queue
-			# associate known Tracks with Queue items
-			mapped_queue = @mpd.queue.map do |mpd_song|
+			# Combine the future queue with the current track.
+			#   MPD puts the current track in its queue only if
+			#   other tracks are queued to play. Account for this.
+			queue = @mpd.queue.unshift @mpd.current_song
+			queue.delete_at(0) if queue[1] && queue[0] == queue[1]
+
+			# Associate known Tracks with Queue items.
+			mapped_queue = queue.map do |mpd_song|
 				t = Track.retreive_from_mpd_id(mpd_song.id)
-				t.queue_pos = mpd_song.pos
-				t
+				if t
+					t.queue_pos = mpd_song.pos
+					t
+				end
 			end
-			# mapped_queue.delete_if { |t| t == current_song }
 			mapped_queue
 		end
 
@@ -125,37 +133,6 @@ module Mumbletune
 				@mpd.delete :id => t.id unless t.id == current.id
 			end
 		end
-
-		
-=begin 
-		# Deprecated add methods. Time to remove?
-
-		def add(track)
-			id = @mpd.addid track.url
-			track.mpd_id = id
-		end
-
-		def add_batch(tracks)
-			tracks.each do |t|
-				id = @mpd.addid t.url
-				t.mpd_id = id
-			end
-		end
-
-		def add_now(track)
-			id = @mpd.addid track.url, 1
-			track.mpd_id = id
-			@mpd.next
-		end
-
-		def add_now_batch(tracks)
-			tracks.each do |t|
-				id = @mpd.addid t.url, tracks.index(t)+1
-				t.mpd_id = id
-			end
-			@mpd.next
-		end
-=end
 
 		# Playback commands
 
