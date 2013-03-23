@@ -33,4 +33,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "eventmachine"
   spec.add_runtime_dependency "text"
   spec.add_runtime_dependency "mustache"
+  spec.add_development_dependency "debugger"
 end

@@ -59,6 +59,8 @@ module Mumbletune
 
 	# shutdown code
 	def self.shutdown
+		self.mumble.disconnect
+		self.player.disconnect
 		puts "\nGoodbye forever. Exiting..."
 	 	exit
 	end

@@ -17,7 +17,7 @@ module Mumbletune
 			end
 
 			@cli.on_text_message do |data|
-				if data[:session].include?(@cli.me[:actor]) # if message was sent to us
+				if data[:session].include?(@cli.me[:session]) # if message was sent to us
 					# interpret the message in a separate thread
 					Thread.new { Message.parse(@cli, data) }
 				end
@@ -41,7 +41,10 @@ module Mumbletune
 			@cli.stream_raw_audio(input)
 		end
 
-
+		def disconnect
+			@cli.disconnect
+			puts ">> Disconnected from Mumble"
+		end
 	end
 
 end

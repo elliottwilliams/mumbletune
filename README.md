@@ -11,15 +11,7 @@ First, install Hexxeh's [spotify-websocket-api](https://github.com/Hexxeh/spotif
     python setup.py build
     python setup.py install
 
-Then, add this line to your application's Gemfile:
-
-    gem 'mumbletune'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Then, install the gem:
 
     $ gem install mumbletune
 

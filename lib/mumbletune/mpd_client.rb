@@ -8,14 +8,25 @@ module Mumbletune
 
 		def initialize(host=Mumbletune.config['mpd']['host'], port=Mumbletune.config['mpd']['port'])
 			@mpd = MPD.new(host, port)
-			@mpd.connect true # 'true' enables callbacks
-			@mpd.clear
+			self.connect
+			self.clear_all
 
 			@history = Array.new
 			@prev_id = 0
 
 			self.defaults
 			self.establish_callbacks
+		end
+
+		def connect
+			@disconnecting = false
+			@mpd.connect true # 'true' enables callbacks
+		end
+
+		def disconnect
+			@disconnecting = true
+			@mpd.disconnect
+			puts ">> Disconnected from MPD"
 		end
 
 		# Setup
@@ -27,8 +38,8 @@ module Mumbletune
 
 		def establish_callbacks
 			@mpd.on :connection do |status|
-				if status == false
-					@mpd.connect true
+				if status == false && !@disconnecting
+					self.connect
 				else
 					puts ">> MPD happens to be connected."
 				end
@@ -95,7 +106,10 @@ module Mumbletune
 			# Combine the future queue with the current track.
 			#   MPD puts the current track in its queue only if
 			#   other tracks are queued to play. Account for this.
-			queue = @mpd.queue.unshift @mpd.current_song
+			queue = @mpd.queue
+			queue.unshift @mpd.current_song if @mpd.current_song
+
+			# Delete index 0 if first queue position and current song are duplicates.
 			queue.delete_at(0) if queue[1] && queue[0] == queue[1]
 
 			# Associate known Tracks with Queue items.

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mumbletune (0.1.1)
+    mumbletune (0.1.2)
       eventmachine
       meta-spotify
       mumble-ruby
@@ -21,7 +21,14 @@ GEM
     blankslate (3.1.2)
     celt-ruby (0.0.1)
       ffi
+    columnize (0.3.6)
     daemons (1.1.9)
+    debugger (1.5.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.0)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.0)
     eventmachine (1.0.3)
     ffi (1.4.0)
     httparty (0.10.2)
@@ -62,5 +69,6 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.3)
+  debugger
   mumbletune!
   rake
