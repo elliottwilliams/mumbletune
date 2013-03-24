@@ -18,15 +18,15 @@
 {{/anything?}}
 
 		{{#queue}}
-		<tr class="odd">
+		<tr>
 			<td align="left">
-				{{#playing?}} &#9658; {{/playing?}}
+				{{#playing?}} ► {{/playing?}}
 			</td>
 			<td align="left">
 				{{name}}
 			</td>
 			<td align="left">
-				{{artist}}
+				{{artist}} <small style="color:#a5a5a5">{{username}}</small>
 			</td>
 		</tr>
 		{{/queue}}

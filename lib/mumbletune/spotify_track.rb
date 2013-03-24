@@ -71,7 +71,8 @@ module Mumbletune
 			end
 
 			tracks = []
-			search_result[:tracks][0...10].each do |track|
+			num_of_tracks = Mumbletune.config["mumbletune"]["tracks_for_artist"] || 5
+			search_result[:tracks][0...num_of_tracks].each do |track|
 				tracks.push SpotifyTrack.new({
 					:name => track.name,
 					:artist => track.artists.first.name,

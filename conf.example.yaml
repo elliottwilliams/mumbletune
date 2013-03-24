@@ -13,3 +13,5 @@ mpd:
         port: 6600
         fifo_out: "/tmp/mumble.fifo"
         default_volume: 60
+mumbletune:
+        tracks_for_artist: 5

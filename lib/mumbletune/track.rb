@@ -1,6 +1,6 @@
 module Mumbletune
 	class Track
-		attr_accessor :name, :artist, :album, :url, :mpd_id, :queue_pos
+		attr_accessor :name, :artist, :album, :url, :username, :mpd_id, :queue_pos
 
 		class << self
 			attr_accessor :store

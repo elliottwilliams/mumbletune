@@ -16,9 +16,12 @@
 <br>
 For example:
 
-    play coldplay
-    play nicki minaj starships
+`play coldplay` plays the top 5 tracks by Coldplay.
 
-Mumbletune uses Spotify to find music.
+`play nicki minaj starships` will play the (excellent) song Starships.
+
+Mumbletune uses Spotify to find and play music. You can `play` a Spotify URL directly instead of searching, like
+
+`play spotify:album:1HjSyGjmLNjRAKgT9t1cna`
 
 <!-- Generate HTML with: $ pandoc -f markdown -->
