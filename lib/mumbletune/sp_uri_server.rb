@@ -1,3 +1,6 @@
+# NOT USED at the moment, since we wrote for Hallon after spotify-websocket-api
+#   started having problems.
+
 require 'sinatra/base'
 
 module Mumbletune

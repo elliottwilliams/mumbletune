@@ -35,7 +35,7 @@ module Mumbletune
 
 		def stream
 			@ready_wait.join
-			input = Mumbletune.config['mpd']['fifo_out']
+			input = Mumbletune.config["player"]["fifo_out"]
 			Thread.current.priority = 5
 			puts ">> Streaming to Mumble from #{input}"
 			@cli.stream_raw_audio(input)

@@ -18,3 +18,5 @@ tmp
 .DS_Store
 conf.yml
 conf.yaml
+
+spotify_appkey.key

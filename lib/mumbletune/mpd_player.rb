@@ -2,11 +2,11 @@ require 'ruby-mpd'
 
 module Mumbletune
 
-	class Player
+	class MPDPlayer
 
 		attr_accessor :history
 
-		def initialize(host=Mumbletune.config['mpd']['host'], port=Mumbletune.config['mpd']['port'])
+		def initialize(host=Mumbletune.config["player"]['host'], port=Mumbletune.config["player"]['port'])
 			@mpd = MPD.new(host, port)
 			self.connect
 			self.clear_all
@@ -32,7 +32,7 @@ module Mumbletune
 		# Setup
 
 		def defaults
-			@mpd.volume = Mumbletune.config["mpd"]["default_volume"] || 100
+			@mpd.volume = Mumbletune.config["player"]["default_volume"] || 100
 			@mpd.consume = true
 		end
 

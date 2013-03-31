@@ -3,7 +3,7 @@ require 'mumbletune/mpd_client'
 require 'mumbletune/messages'
 require 'mumbletune/track'
 require 'mumbletune/collection'
-require 'mumbletune/sp_uri_server'
+# require 'mumbletune/sp_uri_server'
 require 'mumbletune/spotify_track'
 require 'mumbletune/resolver'
 require 'mumbletune/handle_sp_error'
@@ -11,7 +11,7 @@ require 'mumbletune/handle_sp_error'
 require 'optparse'
 require 'yaml'
 require 'eventmachine'
-require 'rubypython'
+# require 'rubypython'
 
 module Mumbletune
 	class << self
@@ -35,6 +35,9 @@ module Mumbletune
 	# load configuration file
 	@config = YAML.load_file(config_file)
 
+=begin
+	# DISABLED since we switched to Hallon
+
 	# load spotify-websocket-api
 	puts ">> Loading Spotify APIs..."
 	RubyPython.start(:python_exe => 'python2.7')
@@ -44,10 +47,11 @@ module Mumbletune
 	uri_thread = Thread.new do
 		SPURIServer::Server.run!
 	end
+=end
 
 	# initialize player
 	play_thread = Thread.new do
-		@player = Player.new
+		@player = HallonPlayer.new
 	end
 
 	# connect to mumble & start streaming

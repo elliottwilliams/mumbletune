@@ -13,9 +13,8 @@ module Mumbletune
 			end
 		end
 
-		def user=(username)
-			@user = username
-			@tracks.each { |t| t.username = username }
+		def next
+			@tracks.shift
 		end
 	end
 end

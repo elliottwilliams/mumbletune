@@ -56,11 +56,11 @@ module Mumbletune
 				# behave according to URI type
 				case type
 				when "track" # Return this track
-					SpotifyTrack::track_from_uri(sp_uri)
+					SpotifyTrack::track_from_uri(sp_uri.uri)
 				when "album" # Return all tracks of the album to queue
-					SpotifyTrack::tracks_from_album(sp_uri)
+					SpotifyTrack::tracks_from_album(sp_uri.uri)
 				when "artist" # Return 10 tracks for this artist
-					SpotifyTrack::tracks_from_artist(sp_uri)
+					SpotifyTrack::tracks_from_artist(sp_uri.uri)
 				end
 			end
 		end
@@ -135,11 +135,11 @@ module Mumbletune
 				end
 
 				if result.class == MetaSpotify::Artist
-					SpotifyTrack.tracks_from_artist(result)
+					SpotifyTrack.tracks_from_artist(result.uri)
 				elsif result.class == MetaSpotify::Album
-					SpotifyTrack.tracks_from_album(result)
+					SpotifyTrack.tracks_from_album(result.uri)
 				elsif result.class == MetaSpotify::Track
-					SpotifyTrack.track_from_uri(result)
+					SpotifyTrack.track_from_uri(result.uri)
 				end
 
 			end
