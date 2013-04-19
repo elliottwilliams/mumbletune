@@ -1,20 +1,37 @@
+require 'forwardable'
+
 module Mumbletune
 	class Collection
-		attr_accessor :type, :tracks, :description, :user
+		include Enumerable
+		extend Forwardable
+
+		attr_accessor :type,  :description, :user, :tracks, :history, :current_track
+
+		def_delegators :@tracks, :length, :first, :last
 
 		def initialize(type, tracks, description)
 			@type = type
 			@description = description
-
-			if tracks.class == Array
-				@tracks = tracks
-			else
-				@tracks = [tracks]
-			end
+			@tracks = [tracks].flatten
+			@history = Array.new
 		end
 
 		def next
-			@tracks.shift
+			if @current_track
+				@history << @current_track
+				@tracks.delete @current_track
+			end
+			@current_track = @tracks.first
+		end
+
+		def done?
+			without_current = @tracks.dup
+			without_current.delete_if { |t| t == @current_track }
+			without_current.empty?
+		end
+
+		def more?
+			!done?
 		end
 	end
 end

@@ -18,17 +18,19 @@
 {{/anything?}}
 
 		{{#queue}}
-		<tr>
-			<td align="left">
-				{{#playing?}} ► {{/playing?}}
-			</td>
-			<td align="left">
-				{{name}}
-			</td>
-			<td align="left">
-				{{artist}} <small style="color:#a5a5a5">{{username}}</small>
-			</td>
-		</tr>
+			{{#tracks}}
+			<tr>
+				<td align="left">
+					{{#playing?}} <span style="#a5a5a5">►</span> {{/playing?}}
+				</td>
+				<td align="left">
+					{{name}}
+				</td>
+				<td align="left">
+					{{artist}} <small style="color:#a5a5a5">{{username}}</small>
+				</td>
+			</tr>
+			{{/tracks}}
 		{{/queue}}
 
 {{#anything?}}

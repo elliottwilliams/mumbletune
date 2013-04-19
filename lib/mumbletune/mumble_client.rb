@@ -4,16 +4,17 @@ module Mumbletune
 	class MumbleClient
 
 		def initialize
-			opts = Mumbletune.config['mumble']
-			@cli = Mumble::Client.new(opts['host'], opts['port'], opts['username'], opts['password'])
+			m_conf = Mumbletune.config["mumble"]
+			f_conf = Mumbletune.config["player"]["fifo"]
+			format = {rate: f_conf["sample_rate"], channels: f_conf["channels"], vbr_rate: f_conf["vbr_rate"]}
+			@cli = Mumble::Client.new(m_conf['host'], m_conf['port'], m_conf['username'], m_conf['password'], format)
 
 			@cli.on_server_sync do |message| # Once connected.
 				@cli.session = message.session # housekeeping for mumble-ruby
-				connect_to = @cli.channels.select { |key, hash| hash["name"] == opts['channel'] }.first[1][:name]
-				@cli.join_channel(connect_to)
+				connect_to = @cli.channels.select { |key, hash| hash["name"] == m_conf["channel"] }.first[1][:name]
+				@cli.join_channel connect_to
 
 				@ready = true
-				puts ">> Connected to Mumble server at #{opts['host']}."
 			end
 
 			@cli.on_text_message do |data|
@@ -35,15 +36,23 @@ module Mumbletune
 
 		def stream
 			@ready_wait.join
-			input = Mumbletune.config["player"]["fifo_out"]
+			input = Mumbletune.config["player"]["fifo"]["path"]
 			Thread.current.priority = 5
-			puts ">> Streaming to Mumble from #{input}"
-			@cli.stream_raw_audio(input)
+			@audio_stream = @cli.stream_raw_audio(input)
+			self.volume = Mumbletune.config["player"]["default_volume"]
 		end
 
 		def disconnect
+			@audio_stream.stop if @audio_stream
 			@cli.disconnect
-			puts ">> Disconnected from Mumble"
+		end
+
+		def volume
+			(@audio_stream.volume * 100).to_i
+		end
+
+		def volume=(vol)
+			@audio_stream.volume = vol.to_i
 		end
 	end
 

@@ -1,7 +1,5 @@
 require 'uri'
-require 'meta-spotify'
 require 'text'
-
 
 module Mumbletune
 	def self.resolve(argument)
@@ -56,11 +54,14 @@ module Mumbletune
 				# behave according to URI type
 				case type
 				when "track" # Return this track
-					SpotifyTrack::track_from_uri(sp_uri.uri)
+					obj = Hallon::Track.new(sp_uri)
+					SpotifyResolver.track(obj)
 				when "album" # Return all tracks of the album to queue
-					SpotifyTrack::tracks_from_album(sp_uri.uri)
+					obj = Hallon::Album.new(sp_uri)
+					SpotifyResolver.tracks_from_album(obj)
 				when "artist" # Return 10 tracks for this artist
-					SpotifyTrack::tracks_from_artist(sp_uri.uri)
+					obj = Hallon::Artist.new(sp_uri)
+					SpotifyResolver.tracks_from_artist(obj)
 				end
 			end
 		end
@@ -89,35 +90,21 @@ module Mumbletune
 				region = Mumbletune.config["spotify"]["region"]
 
 				# determine result based on a type in the first word
+				search = Hallon::Search.new(query, artists: 1, albums: 1, tracks: 1).load
 				if first_word =~ /^artist$/i
-					artist = Mumbletune.handle_sp_error { MetaSpotify::Artist.search(query) }
-					result = artist[:artists].first
+					result = search.artists.first
 
 				elsif first_word =~ /^album$/i
-					album = Mumbletune.handle_sp_error { MetaSpotify::Album.search(query) }
-					album[:albums].select! { |a| a.available_territories.include? region }
-					result = album[:albums].first
+					result = search.albums.first
 
 				elsif first_word =~ /^track$/i
-					track = Mumbletune.handle_sp_error { MetaSpotify::Track.search(query) }
-					track[:tracks].select! { |t| t.album.available_territories.include? region }
-					result = track[:tracks].first
+					result = search.tracks.first
 
 				else # determine intended result by similarity to the query
-					artist = Mumbletune.handle_sp_error { MetaSpotify::Artist.search(query) }
-					album = Mumbletune.handle_sp_error { MetaSpotify::Album.search(query) }
-					track = Mumbletune.handle_sp_error { MetaSpotify::Track.search(query) }
-
-					# searches now finished
-
-					# remove anything out-of-region
-					album[:albums].select! { |a| a.available_territories.include? region } if album[:albums].any?
-					track[:tracks].select! { |t| t.album.available_territories.include? region } if track[:tracks].any?
-
 					compare = []
-					compare.push track[:tracks].first if track[:tracks].any?
-					compare.push album[:albums].first if album[:albums].any?
-					compare.push artist[:artists].first if artist[:artists].any?
+					compare.push search.tracks.first if search.tracks.any?
+					compare.push search.albums.first if search.albums.any?
+					compare.push search.artists.first if search.artists.any?
 					
 					white = Text::WhiteSimilarity.new
 					compare.sort! do |a, b|
@@ -134,12 +121,12 @@ module Mumbletune
 					result = compare.first
 				end
 
-				if result.class == MetaSpotify::Artist
-					SpotifyTrack.tracks_from_artist(result.uri)
-				elsif result.class == MetaSpotify::Album
-					SpotifyTrack.tracks_from_album(result.uri)
-				elsif result.class == MetaSpotify::Track
-					SpotifyTrack.track_from_uri(result.uri)
+				if result.class == Hallon::Artist
+					SpotifyResolver.tracks_from_artist(result)
+				elsif result.class == Hallon::Album
+					SpotifyResolver.tracks_from_album(result)
+				elsif result.class == Hallon::Track
+					SpotifyResolver.track(result)
 				end
 
 			end

@@ -5,28 +5,35 @@ module Mumbletune
 
 	class HallonPlayer
 
-		attr_accessor :history, :queue, :current_song
+		attr_accessor :ready, :history, :queue, :current_track
 
 		def initialize
 			conf = Mumbletune.config
 
-			@history, @queue = Array.new
+			@history = Array.new
+			@queue   = Array.new
 			@prev_id = 0
+			@ready = false
+
+			connect
 
 			@player = Hallon::Player.new(Hallon::Fifo) do
 				# Set driver options
-				@driver.output = conf["player"]["fifo_out"]
+				@driver.output = conf["player"]["fifo"]["path"]
 
 				# Define callbacks
-				on(:end_of_track) { play_next }
-				on(:connection_error) { |s, e| raise "Spotify connection error: #{e}" }
+				on(:end_of_track) { puts "Playing next..."; self.next }
+				on(:streaming_error) { |s, e| raise "Spotify connection error: #{e}" }
 			end
+
+			@ready = true
 		end
 
 		def connect
+			conf = Mumbletune.config
+
 			@session = Hallon::Session.initialize(IO.read(conf["spotify"]["appkey"]))
 			@session.login!(conf["spotify"]["username"], conf["spotify"]["password"])
-			puts ">> Connected to Spotify"
 		end
 
 		def disconnect
@@ -47,6 +54,12 @@ module Mumbletune
 			@player.status == :stopped
 		end
 
+		def more?
+			cols_with_more = @queue.map { |col| col.more? }
+			cols_with_more.delete_if { |m| m == false }
+			cols_with_more.any?
+		end
+
 		# Queue Control
 		def add_collection(col, now=false)
 			# add to the queue
@@ -56,29 +69,23 @@ module Mumbletune
 				@queue.push col
 			end
 
-			# add to history
-			@history.push col
-
-			# play it, if the user's being impatient
-			next if now
+			# play it, if we're starting playback or if the user's wants it now
+			self.next if now || stopped?
 		end
 
 		def undo
-			last_collection  = @history.pop
-
-			last_collection.tracks.each do |t|
-				@queue.delete_if { |q_t| t == q_t }
-			end
+			@queue.pop
 		end
 
 		def clear_queue
 			@queue.clear
+			self.stop
 		end
 
 		# Playback Commands
 		def play
 			if stopped?
-				next
+				self.next
 			elsif paused?
 				@player.play
 			end
@@ -93,14 +100,16 @@ module Mumbletune
 		end
 
 		def next
+			# move the collection to history if it has played all its tracks
+			@history << @queue.shift if @queue.first.done?
+
 			track = @queue.first.next
 
-			# delete the collection if it has played all its tracks
-			@queue.shift if @queue.first.length < 1
-
 			# play that shit!
-			@current_song = track
+			@current_track = track
 			@player.play track
+
+			puts "\u266B  #{track.name} - #{track.artist.name}"
 		end
 
 		def stop

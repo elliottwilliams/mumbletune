@@ -1,12 +1,10 @@
+require 'mumbletune/version'
 require 'mumbletune/mumble_client'
-require 'mumbletune/mpd_client'
+require 'mumbletune/hallon_player'
 require 'mumbletune/messages'
-require 'mumbletune/track'
 require 'mumbletune/collection'
-# require 'mumbletune/sp_uri_server'
-require 'mumbletune/spotify_track'
 require 'mumbletune/resolver'
-require 'mumbletune/handle_sp_error'
+require 'mumbletune/spotify_resolver'
 
 require 'optparse'
 require 'yaml'
@@ -20,66 +18,66 @@ module Mumbletune
 
 	# parse command line options
 	config_file = nil
-	OptionParser.new do |opts|
+	opts = OptionParser.new do |opts|
 		opts.banner = "Usage: mumbletune.rb [options]"
 		opts.on("-c", "--config FILE", "=MANDATORY", "Path to configuration file") do |file|
 			config_file = file
 		end
 		opts.on("-h", "--help", "This help message") do
-			puts opts.help()
+			puts opts.help
 			exit
 		end
-	end.parse!
-	raise OptionParser::MissingArgument unless config_file
+	end
+
+	opts.parse!
+
+	unless config_file
+		puts opts.help
+		exit
+	end
 
 	# load configuration file
 	@config = YAML.load_file(config_file)
 
-=begin
-	# DISABLED since we switched to Hallon
-
-	# load spotify-websocket-api
-	puts ">> Loading Spotify APIs..."
-	RubyPython.start(:python_exe => 'python2.7')
-	Spotify = RubyPython.import('spotify_web.friendly').Spotify
-
-	# open URI server
-	uri_thread = Thread.new do
-		SPURIServer::Server.run!
-	end
-=end
+	Thread.abort_on_exception=true
+	puts "(Remember that you're in development.)"
 
 	# initialize player
 	play_thread = Thread.new do
 		@player = HallonPlayer.new
+		puts ">> Connected to Spotify."
 	end
 
 	# connect to mumble & start streaming
+	sleep 0.1 until @player && @player.ready
 	mumble_thread = Thread.new do
 		@mumble = MumbleClient.new
 		@mumble.connect
+		puts ">> Connected to Mumble server at #{self.config['mumble']['host']}."
+		puts ">> Streaming to Mumble from #{self.config['player']['fifo']['path']}."
 		@mumble.stream
 	end
 
 	# shutdown code
 	def self.shutdown
+		Thread.new do
+			sleep 5 # timeout
+			puts "Timeout. Forcing exit."
+			exit!
+		end
+		print "\n>> Exiting... "
 		self.mumble.disconnect
+		print "Disconnected from Mumble... "
 		self.player.disconnect
-		puts "\nGoodbye forever. Exiting..."
+		print "Disconnected from Spotify... "
+		puts "\nGoodbye forever."
 	 	exit
 	end
 
 	# exit when Ctrl-C pressed
-	EventMachine.schedule do
-		trap("INT") { Mumbletune.shutdown }
+	Signal.trap("INT") do
+		Mumbletune.shutdown
 	end
 
-	# testing
-	# sleep 3
-	# @player.command_test_load
-	# @player.command_play
-
-	Thread.stop # wake up to shut down
-	self.shutdown
-
+	Thread.stop # we're done here
 end
