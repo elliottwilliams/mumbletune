@@ -1,4 +1,5 @@
 spotify:
+        appkey: "/path/to/spotify_appkey.key"
         username: "sp_username"
         password: "sp_password"
         region: "us"
@@ -8,10 +9,10 @@ mumble:
         username: "mumbletune"
         password: "server_password"
         channel: "Music Room"
-mpd:
-        host: "localhost"
-        port: 6600
-        fifo_out: "/tmp/mumble.fifo"
+player:
+        fifo:
+                path: "/tmp/mumbletune.pcm.fifo"
+                sample_rate: 44100
+                channels: 2
         default_volume: 60
-mumbletune:
         tracks_for_artist: 5
