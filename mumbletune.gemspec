@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "hallon"
   spec.add_runtime_dependency "hallon-fifo", ">=0.0.3"
   spec.add_runtime_dependency "ffi", "~>1.3.0"
-  spec.add_runtime_dependency "meta-spotify"
 
   spec.add_runtime_dependency "eventmachine"
   spec.add_runtime_dependency "text"

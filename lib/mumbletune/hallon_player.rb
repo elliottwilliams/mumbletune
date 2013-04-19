@@ -22,7 +22,7 @@ module Mumbletune
 				@driver.output = conf["player"]["fifo"]["path"]
 
 				# Define callbacks
-				on(:end_of_track) { puts "Playing next..."; self.next }
+				on(:end_of_track) { Mumbletune.player.next }
 				on(:streaming_error) { |s, e| raise "Spotify connection error: #{e}" }
 			end
 
@@ -34,11 +34,23 @@ module Mumbletune
 
 			@session = Hallon::Session.initialize(IO.read(conf["spotify"]["appkey"]))
 			@session.login!(conf["spotify"]["username"], conf["spotify"]["password"])
+
+			start_event_loop
 		end
 
 		def disconnect
 			@logging_out = true
+			@event_loop_thread.kill
 			@session.logout!
+		end
+
+		def start_event_loop
+			@event_loop_thread = Thread.new do
+				loop do
+					@session.process_events unless @session.disconnected?
+					sleep 1
+				end
+			end
 		end
 
 		# Status methods

@@ -1,3 +1,5 @@
+require 'bundler/setup'
+
 require 'mumbletune/version'
 require 'mumbletune/mumble_client'
 require 'mumbletune/hallon_player'
