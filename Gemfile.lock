@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/elliottwilliams/hallon-fifo.git
-  revision: 2d875e94b5d057794e511e7fdfdb1a967b38f5c2
-  branch: master
-  specs:
-    hallon-fifo (0.0.3)
-      mkfifo
-
-GIT
   remote: git://github.com/elliottwilliams/mumble-ruby.git
   revision: 7565e5431c9eb519e3181e208dfe1852b00b461e
   branch: master
@@ -28,6 +20,12 @@ PATH
       mumble-ruby
       mustache
       text
+
+PATH
+  remote: ~/Dropbox/Projects/mumbletune/hallon/hallon-fifo
+  specs:
+    hallon-fifo (0.0.3)
+      mkfifo
 
 GEM
   remote: https://rubygems.org/

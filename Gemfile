@@ -4,3 +4,4 @@ source 'https://rubygems.org'
 gemspec
 
 gem "mumble-ruby", :github => "elliottwilliams/mumble-ruby", :branch => "master"
+gem "hallon-fifo", :github => "elliottwilliams/hallon-fifo", :branch => "stutter-reporting"
