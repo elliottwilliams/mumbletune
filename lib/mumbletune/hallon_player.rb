@@ -27,6 +27,7 @@ module Mumbletune
 			end
 
 			@ready = true
+
 		end
 
 		def connect
@@ -113,9 +114,13 @@ module Mumbletune
 
 		def next
 			# move the collection to history if it has played all its tracks
-			@history << @queue.shift if @queue.first.done?
+			@history << @queue.shift if @queue.first && @queue.first.done?
+
+			return nil unless self.more?
 
 			track = @queue.first.next
+
+			return nil unless track
 
 			# play that shit!
 			@current_track = track
