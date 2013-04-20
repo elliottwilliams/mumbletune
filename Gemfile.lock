@@ -1,7 +1,12 @@
 GIT
   remote: git://github.com/elliottwilliams/hallon-fifo.git
+<<<<<<< Updated upstream
   revision: 2d875e94b5d057794e511e7fdfdb1a967b38f5c2
   branch: master
+=======
+  revision: 2afa7bb8978af99ad1d5f5f7bb20d770f1a6c457
+  branch: stutter-reporting
+>>>>>>> Stashed changes
   specs:
     hallon-fifo (0.0.3)
       mkfifo
