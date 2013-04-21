@@ -9,9 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Elliott Williams"]
   spec.email         = ["e@elliottwillia.ms"]
   spec.description   = "Mumbletune connects to a mumble server and allows users to"\
-                       " interact with and play a queue of music. Currently plays"\
-                       " from Spotify alone."
-  spec.summary       = "A mumble server bot that plays music"
+                       " interact with and play a queue of music from Spotify."
+  spec.summary       = "A Mumble VOIP bot that plays Spotify."
   spec.homepage      = "http://github.com/elliottwilliams/mumbletune"
   spec.license       = "MIT"
 
@@ -25,12 +24,8 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "mumble-ruby"
   spec.add_runtime_dependency "hallon"
-  spec.add_runtime_dependency "hallon-fifo", ">=0.0.3"
   spec.add_runtime_dependency "ffi", "~>1.3.0"
 
-  spec.add_runtime_dependency "eventmachine"
   spec.add_runtime_dependency "text"
   spec.add_runtime_dependency "mustache"
-
-  spec.add_development_dependency "debugger"
 end

@@ -10,8 +10,6 @@ require 'mumbletune/spotify_resolver'
 
 require 'optparse'
 require 'yaml'
-require 'eventmachine'
-# require 'rubypython'
 
 module Mumbletune
 	class << self
@@ -40,9 +38,6 @@ module Mumbletune
 
 	# load configuration file
 	@config = YAML.load_file(config_file)
-
-	Thread.abort_on_exception=true
-	puts "(Remember that you're in development.)"
 
 	# initialize player
 	play_thread = Thread.new do
