@@ -5,8 +5,7 @@ module Mumbletune
 
 		def initialize
 			m_conf = Mumbletune.config["mumble"]
-			f_conf = Mumbletune.config["player"]["fifo"]
-			format = {rate: f_conf["sample_rate"], channels: f_conf["channels"], vbr_rate: f_conf["vbr_rate"]}
+			format = {rate: 44100, channels: 2} # Format used by spotify
 			@cli = Mumble::Client.new(m_conf['host'], m_conf['port'], m_conf['username'], m_conf['password'], format)
 
 			@cli.on_server_sync do |message| # Once connected.

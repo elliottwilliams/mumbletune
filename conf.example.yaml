@@ -10,9 +10,5 @@ mumble:
         password: "server_password"
         channel: "Music Room"
 player:
-        fifo:
-                path: "/tmp/mumbletune.pcm.fifo"
-                sample_rate: 44100
-                channels: 2
         default_volume: 60
         tracks_for_artist: 5
