@@ -47,6 +47,7 @@ module Mumbletune
 	# initialize player
 	play_thread = Thread.new do
 		@player = HallonPlayer.new
+		@player.connect
 		puts ">> Connected to Spotify."
 	end
 
@@ -56,7 +57,6 @@ module Mumbletune
 		@mumble = MumbleClient.new
 		@mumble.connect
 		puts ">> Connected to Mumble server at #{self.config['mumble']['host']}."
-		puts ">> Streaming to Mumble from #{self.config['player']['fifo']['path']}."
 		@mumble.stream
 	end
 

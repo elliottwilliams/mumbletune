@@ -1,11 +1,12 @@
 require "hallon"
-require "hallon-fifo"
+require "hallon-queue-output"
+require "thread"
 
 module Mumbletune
 
 	class HallonPlayer
 
-		attr_accessor :ready, :history, :queue, :current_track
+		attr_accessor :ready, :history, :queue, :current_track, :audio_queue
 
 		def initialize
 			conf = Mumbletune.config
@@ -14,20 +15,9 @@ module Mumbletune
 			@queue   = Array.new
 			@prev_id = 0
 			@ready = false
-
-			connect
-
-			@player = Hallon::Player.new(Hallon::Fifo) do
-				# Set driver options
-				@driver.output = conf["player"]["fifo"]["path"]
-
-				# Define callbacks
-				on(:end_of_track) { Mumbletune.player.next }
-				on(:streaming_error) { |s, e| raise "Spotify connection error: #{e}" }
-			end
+			@audio_queue = Queue.new
 
 			@ready = true
-
 		end
 
 		def connect
@@ -36,6 +26,17 @@ module Mumbletune
 			@session = Hallon::Session.initialize(IO.read(conf["spotify"]["appkey"]))
 			@session.login!(conf["spotify"]["username"], conf["spotify"]["password"])
 
+			@player = Hallon::Player.new(Hallon::QueueOutput) do
+				# Set driver options
+				@driver.queue = Mumbletune.player.audio_queue
+
+				# Define callbacks
+				on(:end_of_track) { Mumbletune.player.next }
+				on(:streaming_error) { |s, e| raise "Spotify connection error: #{e}" }
+			end
+
+			@ready = true
+
 			start_event_loop
 		end
 
@@ -43,15 +44,6 @@ module Mumbletune
 			@logging_out = true
 			@event_loop_thread.kill
 			@session.logout!
-		end
-
-		def start_event_loop
-			@event_loop_thread = Thread.new do
-				loop do
-					@session.process_events unless @session.disconnected?
-					sleep 1
-				end
-			end
 		end
 
 		# Status methods
@@ -133,6 +125,16 @@ module Mumbletune
 			@player.stop
 		end
 
+		private
 
+		def start_event_loop
+			@event_loop_thread = Thread.new do
+				loop do
+					@session.process_events unless @session.disconnected?
+					sleep 1
+				end
+			end
+		end
+		
 	end
 end
