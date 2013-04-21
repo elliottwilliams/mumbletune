@@ -127,6 +127,13 @@ module Mumbletune
 					Mumbletune.mumble.connect
 					Mumbletune.mumble.stream
 
+				when /^unstream$/i
+					Mumbletune.mumble.disconnect
+					Mumbletune.mumble.connect
+
+				when /^stream$/i
+					Mumbletune.mumble.stream
+
 				else # Unknown command was given.
 					rendered = Mustache.render Message.template[:commands],
 						:unknown => { :command => message.text }

@@ -1,6 +1,13 @@
 GIT
+  remote: git://github.com/elliottwilliams/hallon-queue-output.git
+  revision: 05bc347cb0e59848788428508da34336117fe139
+  branch: master
+  specs:
+    hallon-queue-output (0.0.1)
+
+GIT
   remote: git://github.com/elliottwilliams/mumble-ruby.git
-  revision: 7565e5431c9eb519e3181e208dfe1852b00b461e
+  revision: 8a557f55d2bace410e9ca046469e7ab7344a51de
   branch: master
   specs:
     mumble-ruby (0.0.3)
@@ -66,6 +73,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.3)
   debugger
+  hallon-queue-output!
   mumble-ruby!
   mumbletune!
   rake

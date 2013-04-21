@@ -36,9 +36,11 @@ module Mumbletune
 
 		def stream
 			@ready_wait.join
-			input = Mumbletune.config["player"]["fifo"]["path"]
 			Thread.current.priority = 5
-			@audio_stream = @cli.stream_raw_audio(input)
+			queue = Mumbletune.player.audio_queue
+
+			@audio_stream = @cli.stream_from_queue(queue)
+
 			self.volume = Mumbletune.config["player"]["default_volume"]
 		end
 
