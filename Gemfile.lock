@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/elliottwilliams/hallon-queue-output.git
-  revision: 05bc347cb0e59848788428508da34336117fe139
+  revision: 20fa7a80944e0245a2abeebc06a4fbc6864db6bf
   branch: fix-cpu-over-time
   specs:
     hallon-queue-output (0.0.1)
