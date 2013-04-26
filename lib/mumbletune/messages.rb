@@ -69,7 +69,7 @@ module Mumbletune
 
 
 				when /^next$/i
-					if Mumbletune.player.more?
+					if Mumbletune.player.any?
 						Mumbletune.player.next
 						current = Mumbletune.player.current_track
 						message.respond_all "#{message.sender.name} skipped to #{current.artist.name} - #{current.name}" if current

@@ -7,7 +7,7 @@ module Mumbletune
 
 		attr_accessor :type,  :description, :user, :tracks, :history, :current_track
 
-		def_delegators :@tracks, :length, :first, :last
+		def_delegators :@tracks, :length, :first, :last, :each, :any?, :empty?
 
 		def initialize(type, tracks, description)
 			@type = type
@@ -24,14 +24,14 @@ module Mumbletune
 			@current_track = @tracks.first
 		end
 
-		def done?
+		def empty?
 			without_current = @tracks.dup
 			without_current.delete_if { |t| t == @current_track }
 			without_current.empty?
 		end
 
-		def more?
-			!done?
+		def any?
+			!empty?
 		end
 	end
 end

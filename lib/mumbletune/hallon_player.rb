@@ -29,6 +29,7 @@ module Mumbletune
 			@player = Hallon::Player.new(Hallon::QueueOutput) do
 				# Set driver options
 				@driver.queue = Mumbletune.player.audio_queue
+				@driver.verbose = true
 
 				# Define callbacks
 				on(:end_of_track) { Mumbletune.player.next }
@@ -59,14 +60,20 @@ module Mumbletune
 			@player.status == :stopped
 		end
 
-		def more?
-			cols_with_more = @queue.map { |col| col.more? }
+		def any?
+			cols_with_more = @queue.map { |col| col.any? }
 			cols_with_more.delete_if { |m| m == false }
 			cols_with_more.any?
 		end
 
+		def empty?
+			!any?
+		end
+
 		# Queue Control
 		def add_collection(col, now=false)
+			only_track = empty?
+
 			# add to the queue
 			if now
 				@queue.unshift col
@@ -74,8 +81,8 @@ module Mumbletune
 				@queue.push col
 			end
 
-			# play it, if we're starting playback or if the user's wants it now
-			self.next if now || stopped?
+			# play it, if this is the first track or if the user specified `now`
+			self.next if now || only_track
 		end
 
 		def undo
@@ -106,13 +113,13 @@ module Mumbletune
 
 		def next
 			# move the collection to history if it has played all its tracks
-			@history << @queue.shift if @queue.first && @queue.first.done?
+			@history << @queue.shift if @queue.first && @queue.first.empty?
 
-			return nil unless self.more?
+			return stop unless any?
 
 			track = @queue.first.next
 
-			return nil unless track
+			return stop unless track
 
 			# play that shit!
 			@current_track = track
