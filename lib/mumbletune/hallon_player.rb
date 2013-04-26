@@ -29,7 +29,7 @@ module Mumbletune
 			@player = Hallon::Player.new(Hallon::QueueOutput) do
 				# Set driver options
 				@driver.queue = Mumbletune.player.audio_queue
-				@driver.verbose = true
+				@driver.verbose = true if Mumbletune.verbose
 
 				# Define callbacks
 				on(:end_of_track) { Mumbletune.player.next }

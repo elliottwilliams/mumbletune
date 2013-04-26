@@ -13,8 +13,11 @@ require 'yaml'
 
 module Mumbletune
 	class << self
-		attr_reader :player, :mumble, :uri_server, :config
+		attr_reader :player, :mumble, :uri_server, :config, :verbose
 	end
+
+	# default verbosity
+	@verbose = false
 
 	# parse command line options
 	config_file = nil
@@ -22,6 +25,9 @@ module Mumbletune
 		opts.banner = "Usage: mumbletune.rb [options]"
 		opts.on("-c", "--config FILE", "=MANDATORY", "Path to configuration file") do |file|
 			config_file = file
+		end
+		opts.on("-v", "--verbose", "Verbose output") do
+			@verbose = true
 		end
 		opts.on("-h", "--help", "This help message") do
 			puts opts.help
