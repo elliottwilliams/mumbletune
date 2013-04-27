@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/elliottwilliams/hallon-queue-output.git
-  revision: 20fa7a80944e0245a2abeebc06a4fbc6864db6bf
-  branch: fix-cpu-over-time
+  revision: cfa3d79d538c376d36d09499b58e90bd98843bd7
+  branch: master
   specs:
-    hallon-queue-output (0.0.1)
+    hallon-queue-output (0.0.2)
 
 GIT
   remote: git://github.com/elliottwilliams/mumble-ruby.git
