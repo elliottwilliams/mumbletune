@@ -20,6 +20,7 @@ PATH
   remote: .
   specs:
     mumbletune (0.2.0)
+      daemons
       ffi (~> 1.3.0)
       hallon
       mumble-ruby
@@ -34,6 +35,7 @@ GEM
       multi_json (~> 1.0)
     celt-ruby (0.0.1)
       ffi
+    daemons (1.1.9)
     ffi (1.3.1)
     hallon (0.18.1)
       spotify (~> 12.3.0)

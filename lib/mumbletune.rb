@@ -10,21 +10,26 @@ require 'mumbletune/spotify_resolver'
 
 require 'optparse'
 require 'yaml'
+require 'daemons'
 
 module Mumbletune
 	class << self
 		attr_reader :player, :mumble, :uri_server, :config, :verbose
 	end
 
-	# default verbosity
-	@verbose = false
+	# defaults
+	@verbose 		= false
+	config_file 	= nil
+	become_daemon 	= false
 
 	# parse command line options
-	config_file = nil
 	opts = OptionParser.new do |opts|
 		opts.banner = "Usage: mumbletune.rb [options]"
 		opts.on("-c", "--config FILE", "=MANDATORY", "Path to configuration file") do |file|
 			config_file = file
+		end
+		opts.on("-d", "--daemonize", "Run mumbletune as a daemon") do
+			become_daemon = true
 		end
 		opts.on("-v", "--verbose", "Verbose output") do
 			@verbose = true
@@ -44,6 +49,9 @@ module Mumbletune
 
 	# load configuration file
 	@config = YAML.load_file(config_file)
+
+	# daemonize
+	Daemons.daemonize if become_daemon
 
 	# initialize player
 	play_thread = Thread.new do
