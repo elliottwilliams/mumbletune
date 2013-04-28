@@ -125,7 +125,7 @@ module Mumbletune
 			@current_track = track
 			@player.play track
 
-			puts "\u266B  #{track.name} - #{track.artist.name}"
+			puts "\u266B  #{track.name} - #{track.artist.name}" unless Mumbletune.verbose
 		end
 
 		def stop

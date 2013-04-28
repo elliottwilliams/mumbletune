@@ -129,8 +129,10 @@ module Mumbletune
 
 			rescue => err # Catch any command that errored.
 				message.respond "Woah, an error occurred: #{err.message}"
-				puts "#{err.class}: #{err.message}"
-				puts err.backtrace
+				unless Mumbletune.verbose
+					puts "#{err.class}: #{err.message}"
+					puts err.backtrace
+				end
 			end
 		end
 

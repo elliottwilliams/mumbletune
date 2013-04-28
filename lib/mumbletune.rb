@@ -50,9 +50,6 @@ module Mumbletune
 	# load configuration file
 	@config = YAML.load_file(config_file)
 
-	# daemonize
-	Daemons.daemonize if become_daemon
-
 	# initialize player
 	play_thread = Thread.new do
 		@player = HallonPlayer.new
@@ -89,6 +86,9 @@ module Mumbletune
 	Signal.trap("INT") do
 		Mumbletune.shutdown
 	end
+
+	# daemonize
+	Daemons.daemonize if become_daemon
 
 	Thread.stop # we're done here
 end
