@@ -12,3 +12,4 @@ mumble:
 player:
         default_volume: 60
         tracks_for_artist: 5
+log_dir: "/path/to/logs"

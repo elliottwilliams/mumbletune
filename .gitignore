@@ -21,3 +21,5 @@ conf.yaml
 
 spotify_appkey.key
 tmp/
+
+logs/

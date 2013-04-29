@@ -16,6 +16,8 @@ module Mumbletune
 		def self.parse(client, data)
 			message = Message.new(client, data)
 
+			Mumbletune.access_log.info "Message from #{message.sender.name}: #{message.text}"
+
 			begin
 				case message.text
 
@@ -129,8 +131,14 @@ module Mumbletune
 
 			rescue => err # Catch any command that errored.
 				message.respond "Woah, an error occurred: #{err.message}"
+				
 				puts "#{err.class}: #{err.message}"
 				puts err.backtrace
+
+				Mumbletune.error_log.error <<-END
+#{err.class}: #{err.message}
+#{err.backtrace.join "\n"}
+END
 			end
 		end
 

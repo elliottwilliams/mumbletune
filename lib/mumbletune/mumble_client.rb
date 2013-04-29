@@ -3,6 +3,8 @@ require 'mumble-ruby'
 module Mumbletune
 	class MumbleClient
 
+		attr_accessor :ready
+
 		def initialize
 			m_conf = Mumbletune.config["mumble"]
 			format = {rate: 44100, channels: 2} # Format used by spotify

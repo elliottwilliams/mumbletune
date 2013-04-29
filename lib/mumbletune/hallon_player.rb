@@ -16,8 +16,6 @@ module Mumbletune
 			@prev_id = 0
 			@ready = false
 			@audio_queue = Queue.new
-
-			@ready = true
 		end
 
 		def connect
@@ -126,6 +124,7 @@ module Mumbletune
 			@player.play track
 
 			puts "\u266B  #{track.name} - #{track.artist.name}"
+			Mumbletune.access_log.info "\u266B  #{track.name} - #{track.artist.name}"
 		end
 
 		def stop
