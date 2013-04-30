@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require "daemons"
+require "optparse"
+
+dir = File.expand_path File.dirname(__FILE__)
+log = File.expand_path File.join(dir, "../logs")
+
+# change -c paramater to full path (survives daemon)
+ARGV.each_index do |i|
+	if ARGV[i] == "-c"
+		ARGV[i+1] = File.expand_path File.join(Dir.pwd, ARGV[i+1])
+	end
+end
+
+options = {
+	app_name:	"mumbletune",
+	dir_mode:	:normal,
+	dir:		log,
+	log_output:	true
+}
+
+Daemons.run(File.join(dir, "mumbletune"), options)
