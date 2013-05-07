@@ -48,6 +48,15 @@ module Mumbletune
 			@cli.disconnect
 		end
 
+		def message(users, text)
+			users = Array(users) # force into array
+			users.each { |u| @cli.text_user(u.session, text) }
+		end
+
+		def broadcast(text)
+			@cli.text_channel(@cli.me.channel_id, text)
+		end
+
 		def volume
 			(@audio_stream.volume * 100).to_i
 		end

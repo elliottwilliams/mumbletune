@@ -34,6 +34,7 @@ module Mumbletune
 				# Define callbacks
 				on(:end_of_track) { Mumbletune.player.next }
 				on(:streaming_error) { |s, e| raise "Spotify connection error: #{e}" }
+				on(:play_token_lost) { Mumbletune.player.play_token_lost }
 			end
 
 			@ready = true
@@ -130,6 +131,13 @@ module Mumbletune
 
 		def stop
 			@player.stop
+		end
+
+		# Callback Handling
+		def play_token_lost
+			Mumbletune.mumble.broadcast %w{Mumbletune was just paused because this
+				Spotify account is being used elsewhere. Type <code>unpause
+				</code> to regain control and keep playing.} * " "
 		end
 
 		private
