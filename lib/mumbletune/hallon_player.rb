@@ -6,16 +6,17 @@ module Mumbletune
 
 	class HallonPlayer
 
-		attr_accessor :ready, :history, :queue, :current_track, :audio_queue
+		attr_accessor :ready, :play_history, :add_history, :queue, :current_track, :audio_queue
 
 		def initialize
 			conf = Mumbletune.config
 
-			@history = Array.new
-			@queue   = Array.new
-			@prev_id = 0
-			@ready = false
-			@audio_queue = Queue.new
+			@play_history = Array.new
+			@add_history  = Array.new
+			@queue        = Array.new
+			@prev_id      = 0
+			@ready        = false
+			@audio_queue  = Queue.new
 
 			@ready = true
 		end
@@ -82,12 +83,18 @@ module Mumbletune
 				@queue.push col
 			end
 
+			# record in additions history
+			@add_history.push col
+
 			# play it, if this is the first track or if the user specified `now`
 			self.next if now || only_track
 		end
 
 		def undo
-			@queue.pop
+			removed = @add_history.pop
+			@queue.delete_if { |col| col == removed }
+			self.next if removed.current_track
+			removed
 		end
 
 		def clear_queue
@@ -113,8 +120,8 @@ module Mumbletune
 		end
 
 		def next
-			# move the collection to history if it has played all its tracks
-			@history << @queue.shift if @queue.first && @queue.first.empty?
+			# move the collection to play_history if it has played all its tracks
+			@play_history << @queue.shift if @queue.first && @queue.first.empty?
 
 			return stop unless any?
 
