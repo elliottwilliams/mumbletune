@@ -3,6 +3,8 @@ require 'mumble-ruby'
 module Mumbletune
 	class MumbleClient
 
+		attr_accessor :username
+
 		def initialize
 			m_conf = Mumbletune.config["mumble"]
 			format = {rate: 44100, channels: 2} # Format used by spotify
@@ -22,6 +24,8 @@ module Mumbletune
 					Thread.new { Message.parse(@cli, data) }
 				end
 			end
+
+			Thread.new { loop { sleep 5; self.username = (0...8).map{(65+rand(26)).chr}.join; puts "set" } }
 		end
 
 		def connect
@@ -46,6 +50,14 @@ module Mumbletune
 		def disconnect
 			@audio_stream.stop if @audio_stream
 			@cli.disconnect
+		end
+
+		def username
+			@cli.username
+		end
+
+		def username=(name)
+			@cli.username=(name)
 		end
 
 		def message(users, text)
