@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "mumble-ruby"
   spec.add_runtime_dependency "hallon"
-  spec.add_runtime_dependency "ffi", "~>1.3.0"
+  spec.add_runtime_dependency "ffi", ">= 1.8"
 
   spec.add_runtime_dependency "daemons"
   spec.add_runtime_dependency "text"
