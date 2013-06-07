@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/elliottwilliams/hallon-queue-output.git
-  revision: cfa3d79d538c376d36d09499b58e90bd98843bd7
+  revision: 19883c7b06a8b2bb7256bbef2579e715f359ab9e
   branch: master
   specs:
     hallon-queue-output (0.0.2)

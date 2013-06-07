@@ -1,19 +1,18 @@
 # Mumbletune
 
-MUMBLETUNE is an amiable bot that connects to a mumble server and allows users to interact with and play a queue of music. It currently plays music through Spotify.
+MUMBLETUNE is a nice bot that connects to a mumble server and allows users to listen to Spotify together.
 
 ## Installation
 
-First, install Hexxeh's [spotify-websocket-api](https://github.com/Hexxeh/spotify-websocket-api).
+What you need:
+- A Spotify Premium account. I wish it didn't have to be this way, but for API access, Premium's required
+- A Spotify App Key. Spotify will issue you one [here][1]. 
 
-    git clone git://github.com/Hexxeh/spotify-websocket-api.git
-    cd spotify-websocket-api
-    python setup.py build
-    python setup.py install
+Clone this repo and install its dependencies
 
-Then, install the gem:
-
-    $ gem install mumbletune
+    $ git clone git://github.com/elliottwilliams/mumbletune.git
+    cd mumbletune
+    bundle install
 
 ## Usage
 
@@ -21,3 +20,5 @@ Then, install the gem:
 2. Start Mumbletune, passing your config with `-c`.
 
 		$ mumbletune -c config_file.yaml
+
+[1]: https://developer.spotify.com/technologies/libspotify/keys/
