@@ -8,11 +8,22 @@ What you need:
 - A Spotify Premium account. I wish it didn't have to be this way, but for API access, Premium's required
 - A Spotify App Key. Spotify will issue you one [here][1]. 
 
-Clone this repo and install its dependencies
+First, ensure you have some prerequisites (these commands are for Ubuntu 12.04)
+
+    # Build tools (make, etc.), Git, and Ruby 1.9.3
+    $ sudo apt-get install build-essential git ruby1.9.3
+    
+    # CELT and libsamplerate
+    $ sudo apt-get install libcelt-dev libsamplerate0-dev
+    
+    # Bundler
+    $ gem install bundler
+
+Then, clone Mumbletune and install its dependencies
 
     $ git clone git://github.com/elliottwilliams/mumbletune.git
-    cd mumbletune
-    bundle install
+    $ cd mumbletune
+    $ bundle install
 
 ## Usage
 
