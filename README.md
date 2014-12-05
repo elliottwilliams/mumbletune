@@ -8,10 +8,10 @@ What you need:
 - A Spotify Premium account. I wish it didn't have to be this way, but for API access, Premium's required
 - A Spotify App Key. Spotify will issue you one [here][1]. 
 
-First, ensure you have some prerequisites (these commands are for Ubuntu 12.04)
+First, ensure you have some prerequisites (these commands are for Ubuntu 12.04, but should be similar on other Debian-based distributions. I have no experience running Mumbletune on Windows.)
 
     # Build tools (make, etc.), Git, and Ruby 1.9.3
-    $ sudo apt-get install build-essential git ruby1.9.3
+    $ sudo apt-get install build-essential git ruby1.9.3 ruby-dev
     
     # CELT and libsamplerate
     $ sudo apt-get install libcelt-dev libsamplerate0-dev
